@@ -38,33 +38,51 @@ const styleElementString = makeStyleElementString(css.toString())
   }
 
   ;(function () {
+
+    //function that hides bad reviews and highest and lowest rating select options
+    const reviewHandler = () => {
     
-     const reviewRating = document.querySelectorAll('.wrapper-reviews .row.mb-3.review-wrapper .total')
+    // all reviews containers 
+     const reviewRating = document.querySelectorAll('.wrapper-reviews .row.mb-3.review-wrapper')
     
-     const reviewNumber =  () => reviewRating.forEach((el)=> {
-      console.log(el)
+     // hide reviews function
+     const hideReviewsHandler =  () => reviewRating.forEach((el)=> {
+      const reviewNumber = Number(el.querySelector('.total').textContent.trim().charAt(0))
+      console.log(reviewNumber)
+      if (reviewNumber <=3 ) {
+        el.style.display = 'none'
+      }
      })
 
-    reviewNumber()
+     hideReviewsHandler()
 
+    // function that hides the higest and lowest rating options 
+     const hideRatings = () => {
+     const highestRating = document.querySelector('.has-reviews option[value="highestRating"]')
+     const lowestRating = document.querySelector('.has-reviews option[value="lowestRating"]')
+     highestRating.style.display = 'none'
+     lowestRating.style.display = 'none'
+     }
+     hideRatings()
+    }
 
+    reviewHandler()
 
-      // // Mutationobserver to observe changes to page
-      // const observer = new MutationObserver(() => {
-      //   // function that waits for the filter to function and then re inserts the promo block
-      //   waitForElm(
-      //     '.s-result-item.s-asin.sg-col.sg-col-12-of-12.s-widget-spacing-small'
-      //   ).then(() => {
-      //     if (document.querySelector('.promoContainer')) return
-      //     allItems()[0].insertAdjacentHTML('afterend', promoBlock())
-      //   })
-      // })
+    const reviewContainer = document.querySelector('.wrapper-reviews')
 
-      // const options = {
-      //   attributes: true,
-      // }
+      // Mutationobserver to observe changes to page
+      const observer = new MutationObserver(() => {
+        // console.log('mutation')
+        reviewHandler()
+      })
 
-      // observer.observe(itemsContainer(), options)
+      const options = {
+        attributes: true,
+        childList: true, 
+        subtree: true
+      }
+
+      observer.observe(reviewContainer, options)
     
   })()
 })()
