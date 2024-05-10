@@ -32,64 +32,60 @@ const styleElementString = makeStyleElementString(css.toString())
   }
 
   ;(function () {
-    waitForElm('.has-reviews')
-      .then(() => {
-        console.log('Element is ready')
-        const reviewHandler = () => {
-          // all reviews containers
-          const reviewRating = document.querySelectorAll(
-            '.wrapper-reviews .row.mb-3.review-wrapper'
+    // function to fire once the has-reviews class appears on page
+    waitForElm('.has-reviews').then(() => {
+      console.log('Element is ready')
+      const reviewHandler = () => {
+        // all reviews containers
+        const reviewRating = document.querySelectorAll(
+          '.wrapper-reviews .row.mb-3.review-wrapper'
+        )
+
+        // hide reviews function
+        const hideReviewsHandler = () =>
+          reviewRating.forEach((el) => {
+            const reviewNumber = Number(
+              el.querySelector('.total').textContent.trim().charAt(0)
+            )
+            // console.log(reviewNumber)
+            if (reviewNumber <= 3) {
+              el.style.display = 'none'
+            }
+          })
+
+        hideReviewsHandler()
+
+        // function that hides the higest and lowest rating options
+        const hideRatings = () => {
+          const highestRating = document.querySelector(
+            '.has-reviews option[value="highestRating"]'
           )
-
-          // hide reviews function
-          const hideReviewsHandler = () =>
-            reviewRating.forEach((el) => {
-              const reviewNumber = Number(
-                el.querySelector('.total').textContent.trim().charAt(0)
-              )
-              // console.log(reviewNumber)
-              if (reviewNumber <= 3) {
-                el.style.display = 'none'
-              }
-            })
-
-          hideReviewsHandler()
-
-          // function that hides the higest and lowest rating options
-          const hideRatings = () => {
-            const highestRating = document.querySelector(
-              '.has-reviews option[value="highestRating"]'
-            )
-            const lowestRating = document.querySelector(
-              '.has-reviews option[value="lowestRating"]'
-            )
-            highestRating.style.display = 'none'
-            lowestRating.style.display = 'none'
-          }
-          hideRatings()
+          const lowestRating = document.querySelector(
+            '.has-reviews option[value="lowestRating"]'
+          )
+          highestRating.style.display = 'none'
+          lowestRating.style.display = 'none'
         }
+        hideRatings()
+      }
 
+      reviewHandler()
+
+      const reviewContainer = document.querySelector('.wrapper-reviews')
+
+      // Mutationobserver to observe changes to page
+      const observer = new MutationObserver(() => {
+        // console.log('mutation')
         reviewHandler()
-
-        const reviewContainer = document.querySelector('.wrapper-reviews')
-
-        // Mutationobserver to observe changes to page
-        const observer = new MutationObserver(() => {
-          // console.log('mutation')
-          reviewHandler()
-        })
-
-        const options = {
-          attributes: true,
-          childList: true,
-          subtree: true,
-        }
-
-        observer.observe(reviewContainer, options)
       })
-      .then(() => {
-        //function that hides bad reviews and highest and lowest rating select options
-      })
-    // });
+
+      const options = {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      }
+
+      observer.observe(reviewContainer, options)
+    })
   })()
 })()
