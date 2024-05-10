@@ -21,6 +21,7 @@ const styleElementString = makeStyleElementString(css.toString())
     if (tries > 5) return handleLoadFailure()
     // Add some logic to check for a target here and then retry
     if (!document.body) return retryTest(init, 500, tries + 1)
+    // if the below class does not appear retry the test 
     if (!document.querySelector('.product-images-main'))
       return retryTest(init, 500, tries + 1)
     // Add our css element string to the end of the document body
