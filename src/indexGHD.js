@@ -1,3 +1,4 @@
+import css from './assets/scss/styleGHD.scss'
 
 import {
   waitForElm,
