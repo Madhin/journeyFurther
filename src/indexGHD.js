@@ -12,7 +12,7 @@ import {
 const styleElementString = makeStyleElementString(css.toString())
 
 // IIFE to initialise the test and catch any errors
-;(function init(tries = 0) {
+;(function init(tries = 0) {  
   try {
     // if we have tried to load more than X times we failed
     if (tries > 5) return handleLoadFailure()
