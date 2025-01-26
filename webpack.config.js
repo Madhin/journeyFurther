@@ -7,7 +7,7 @@ const webpack = require('webpack')
 module.exports = (env) => {
   return {
     entry: {
-    testGHD: './src/indexGHD.js'
+    addToBag: './src/addToBag.js'
     },
     output: {
       filename: '[name].js',
